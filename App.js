@@ -1,21 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import * as Font from "expo-font";
+import React, { useState } from "react";
+import Home from "./screens/home";
+import { AppLoading } from "expo";
+import Navigator from "./routes/drawer";
+const getFonts = () => {
+  return Font.loadAsync({ 
+    "Asap-regular": require("./assets/fonts/Asap-Regular.ttf"),
+    "Asap-bold": require("./assets/fonts/Asap-SemiBold.ttf"),
+  });
+};
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (fontsLoaded) {
+    return <Navigator />;
+  } else {
+    return (
+      // triggers an async task, when complete will trigger the onfinish finction
+      <AppLoading startAsync={getFonts} onFinish={() => setFontsLoaded(true)} />
+    );
+  }
+}
